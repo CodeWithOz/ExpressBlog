@@ -7,14 +7,15 @@ const session = require('express-session');
 const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 
 const { client_secret, session_secret } = require('./apiKeys');
+const { orgUrl, token, client_id } = require('./credentials');
 
 const blogRouter = require('./routes/blog');
 const usersRouter = require('./routes/users');
 
 const app = express();
 const client = new okta.Client({
-  orgUrl: 'https://dev-431001.okta.com',
-  token: '00Nui1O_QJeUqLWGXHcpiDJkVdyV8c3hGSqTOamAjk'
+  orgUrl,
+  token
 });
 
 // view engine setup
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const oidc = new ExpressOIDC({
   issuer: 'https://dev-431001.okta.com/oauth2/default',
-  client_id: '0oacf8iavPMGwTWS1356',
+  client_id,
   client_secret,
   redirect_uri: 'http://localhost:3000/users/callback',
   scope: 'openid profile',
